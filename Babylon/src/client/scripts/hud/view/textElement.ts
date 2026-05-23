@@ -1,5 +1,5 @@
 // textElement.ts - Reusable styled text UI element for overlays.
-import '../../styles/view/textElement.css'
+import '../../../styles/view/textElement.css'
 
 export class TextElement {
   public element: HTMLDivElement

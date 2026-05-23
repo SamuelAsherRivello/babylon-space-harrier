@@ -1,6 +1,6 @@
 // physicsData.test.ts - Unit tests for PhysicsData class
 import { describe, expect, it } from 'vitest'
-import { PhysicsData } from '../../client/scripts/model/physicsModel'
+import { PhysicsData } from '../../client/scripts/world/model/physicsData'
 
 describe('PhysicsData', () => {
   it('should store mass and restitution values', () => {

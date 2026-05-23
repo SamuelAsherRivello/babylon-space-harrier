@@ -5,7 +5,7 @@ import {
   type Scene
 } from '@babylonjs/core'
 
-export const addPostProcess = (scene: Scene, cameras: Camera[]) => {
+export const createPostProcess = (scene: Scene, cameras: Camera[]) => {
   const hdr = true
   const pipeline = new DefaultRenderingPipeline(
     'standardPipeline',

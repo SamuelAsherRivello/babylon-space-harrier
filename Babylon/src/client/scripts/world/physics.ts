@@ -1,11 +1,16 @@
-// addPhysics.ts - Initializes physics and adds physics to meshes.
 import * as BABYLON from '@babylonjs/core'
 import HavokPhysics from '@babylonjs/havok'
-import { PhysicsData } from './model/physicsModel'
+import { PhysicsData } from './model/physicsData'
 
-const physicsData = new PhysicsData()
+const defaultPhysicsData = new PhysicsData()
 
-export const initPhysics = async (scene: BABYLON.Scene) => {
+export type PhysicsBodyShape =
+  | BABYLON.PhysicsShapeType.SPHERE
+  | BABYLON.PhysicsShapeType.BOX
+
+export const initializePhysics = async (
+  scene: BABYLON.Scene
+): Promise<void> => {
   const url = import.meta.env.DEV
     ? 'node_modules/@babylonjs/havok/lib/esm/HavokPhysics.wasm'
     : 'HavokPhysics.wasm'
@@ -17,13 +22,12 @@ export const initPhysics = async (scene: BABYLON.Scene) => {
   scene.enablePhysics(new BABYLON.Vector3(0, -9.8, 0), havokPlugin)
 }
 
-export const addPhysicsImposter = (
+export const addPhysicsBody = (
   mesh: BABYLON.Mesh,
-  shape: BABYLON.PhysicsShapeType.SPHERE |
-    BABYLON.PhysicsShapeType.BOX,
+  shape: PhysicsBodyShape,
   scene: BABYLON.Scene,
-  mass: number = physicsData.mass,
-  restitution: number = physicsData.restitution
+  mass: number = defaultPhysicsData.mass,
+  restitution: number = defaultPhysicsData.restitution
 ) => {
   mesh.metadata = {}
   mesh.metadata.aggregate = new BABYLON.PhysicsAggregate(

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { OrbiterModel } from '../../client/scripts/model/orbiterModel'
+import { OrbiterModel } from '../../client/scripts/gameplay/model/orbiterModel'
 
 describe('OrbiterModel', () => {
   it('uses the production orbiter defaults', () => {

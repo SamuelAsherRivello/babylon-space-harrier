@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   BabylonConfigurationModel
-} from '../../client/scripts/model/babylonConfigurationModel'
+} from '../../client/scripts/world/model/babylonConfigurationModel'
 
 describe('BabylonConfigurationModel', () => {
   it('uses the production engine defaults', () => {
