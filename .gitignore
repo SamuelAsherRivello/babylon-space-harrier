@@ -1,0 +1,89 @@
+# `.gitignore` tells Git which files and folders to leave untracked.
+# Learn more:
+# https://git-scm.com/docs/gitignore
+
+# Logs
+*.log
+logs
+lerna-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Babylon
+Babylon/node_modules/
+Babylon/dist/
+Babylon/public/_dist_
+Babylon/public/*.js
+Babylon/coverage/
+Babylon/tsconfig.tsbuildinfo
+
+# Bower dependency directory
+# https://bower.io/
+bower_components
+
+# Build output
+.build
+build
+build/Release
+dist
+out
+web_modules
+.vite/
+
+# Cache and coverage
+coverage
+*.lcov
+.nyc_output
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Diagnostic reports
+# https://nodejs.org/api/report.html
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Editor directories and files
+.DS_Store
+.idea/
+.vscode/
+Thumbs.db
+
+# Eslint
+.eslintcache
+
+# Grunt intermediate storage
+# https://gruntjs.com/creating-plugins#storing-task-files
+.grunt
+
+# Lock and integrity files
+.lock-wscript
+.yarn-integrity
+
+# Node
+node_modules/
+jspm_packages/
+
+# npm
+.npm
+
+# Output of `npm pack`
+*.tgz
+
+# REPL history
+.node_repl_history
+
+# TypeScript
+*.tsbuildinfo
+typings/
+
+# Miscellaneous
+.env
+.env.test
+pids
+*.pid
+*.pid.lock
+*.seed
+lib-cov
+/.tmp-chrome-fullscreen-profile

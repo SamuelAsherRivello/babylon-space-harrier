@@ -1,0 +1,42 @@
+# `.aiignore` tells AI tools which files and folders to skip as context.
+# Learn more about the ignore syntax:
+# https://git-scm.com/docs/gitignore
+
+# Logs
+*.log
+*.tmp
+
+# Babylon
+Babylon/node_modules/
+Babylon/dist/
+Babylon/public/_dist_
+Babylon/public/*.js
+Babylon/coverage/
+Babylon/package-lock.json
+Babylon/tsconfig.tsbuildinfo
+
+# Build output
+dist/
+build/
+out/
+.vite/
+coverage/
+
+# Editor directories and files
+.DS_Store
+.idea/
+.vscode/
+Thumbs.db
+
+# Dependencies
+node_modules/
+
+# Generated metadata
+.git/
+package-lock.json
+*.tsbuildinfo
+
+# Miscellaneous
+.env
+.env.*
+!.env.example

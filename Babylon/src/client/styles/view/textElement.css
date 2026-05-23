@@ -1,0 +1,17 @@
+﻿/* textElement.css - Styles for TextElement UI overlay */
+.TextElement {
+  position: fixed;
+  text-align: left;
+  right: 10px;
+  bottom: 10px;
+  background: white;
+  color: black;
+  padding: 6px 12px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  font-size: 12px;
+  font-family: sans-serif;
+  z-index: 1001;
+  width: 160px;
+  white-space: pre-line;
+}
