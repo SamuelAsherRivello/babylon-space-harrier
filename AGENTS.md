@@ -8,7 +8,7 @@ This document also describes the refactor boundaries for independent work.
 
 ## 3D World (`src/client/scripts/world/`)
 
-- Purpose: initialize rendering, scene setup, physics, and post-processing.
+- Purpose: initialize rendering, scene setup, and post-processing.
 - API: `createWorld(options)` in `world/createWorld.ts`.
 - Public return: `World` with:
   - `canvas`, `scene`, `engine`, `camera`, `renderingType`
@@ -34,25 +34,19 @@ This document also describes the refactor boundaries for independent work.
 
 ## Gameplay State (`src/client/scripts/gameplay/`)
 
-- Purpose: orbiter rules and simulation lifecycle.
+- Purpose: player ship controls, shooting bullets, and enemy ship setup.
 - API: `createGameplayState(options)` in `gameplay/createGameplayState.ts`.
 - APIs:
-  - `spawnOrbiter()`
+  - `setMovementInput()`
+  - `shoot()`
   - `update(deltaSeconds)`
-  - `setOrbiterModel(model)`
-  - `setOrbiterFactory(factoryClass)`
 - Files:
   - `gameplay/createGameplayState.ts`
-  - `gameplay/orbiterFactory.ts`
-  - `gameplay/orbiter.ts`
-  - `gameplay/model/orbiterModel.ts`
-  - `gameplay/sound.ts`
-  - `gameplay/tweens.ts`
 
 ## Integration points
 
 - Integration remains in `src/client/scripts/index.ts`.
 - World owns scene creation; gameplay mutates scene objects passed in.
-- HUD reads world rendering info and dispatches spawn callbacks.
-- Gameplay owns spawn model and uses `AddOrbiter` factory for new entities.
-- HMR rebind for gameplay API stays in `index.ts`.
+- HUD reads world rendering info and dispatches movement/shoot callbacks.
+- Gameplay consumes ship model and scene from world, then updates movement and
+  bullet/enemy positions from the render loop.

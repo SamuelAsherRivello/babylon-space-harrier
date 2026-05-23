@@ -1,15 +1,10 @@
 import * as BABYLON from '@babylonjs/core'
-import '@babylonjs/loaders/glTF'
-import { addPhysicsBody, initializePhysics } from './physics'
 import { createPostProcess } from './postProcess'
 import { BabylonConfigurationModel } from './model/babylonConfigurationModel'
-import { PhysicsData } from './model/physicsData'
 
-const WORLD_CAMERA_TARGET = new BABYLON.Vector3(-4, 2, 5)
-const WORLD_CAMERA_ORIGIN = new BABYLON.Vector3(0, 1, 0)
-const WORLD_GROUND_SIZE = 3.8
-const WORLD_GROUND_HEIGHT = -0.01
-const WORLD_SPHERE_DIAMETER = 1
+const WORLD_CAMERA_ORIGIN = new BABYLON.Vector3(0, 0, 0)
+const WORLD_CAMERA_START = new BABYLON.Vector3(0, 0, -300)
+const NEAR_ORTHO_FOV_RADIANS = 0.1;
 
 export type RenderingBackend = 'WebGPU' | 'WebGL'
 
@@ -59,54 +54,39 @@ async function createEngine(
   }
 }
 
-function createCamera(
-  scene: BABYLON.Scene,
-  canvas: HTMLCanvasElement
-): BABYLON.ArcRotateCamera {
+function createCamera(scene: BABYLON.Scene): BABYLON.ArcRotateCamera {
   const camera = new BABYLON.ArcRotateCamera(
     'camera',
     0,
     0,
-    5,
-    WORLD_CAMERA_TARGET,
+    WORLD_CAMERA_START.length(),
+    WORLD_CAMERA_ORIGIN,
     scene
   )
 
   camera.setTarget(WORLD_CAMERA_ORIGIN)
-  camera.attachControl(canvas, true)
+  camera.setPosition(WORLD_CAMERA_START)
+  camera.mode = BABYLON.Camera.PERSPECTIVE_CAMERA
+  camera.fov = NEAR_ORTHO_FOV_RADIANS
+  camera.detachControl()
+  camera.inputs.clear()
   return camera
 }
 
-function configureWorldGeometry(scene: BABYLON.Scene): void {
-  const width = WORLD_GROUND_SIZE
-  const height = WORLD_GROUND_SIZE
-  const subdivisions = 1
-  const ground = BABYLON.MeshBuilder.CreateGround(
-    'ground',
-    { width, height, subdivisions },
+function createWorldLight(scene: BABYLON.Scene) {
+  const ambient = new BABYLON.HemisphericLight(
+    'ambientLight',
+    new BABYLON.Vector3(0, 1, 0),
     scene
   )
+  ambient.intensity = 0.8
 
-  ground.position.y = WORLD_GROUND_HEIGHT
-  addPhysicsBody(ground, BABYLON.PhysicsShapeType.BOX, scene, 0)
-
-  const spherePhysics = new PhysicsData()
-  const diameter = WORLD_SPHERE_DIAMETER
-  spherePhysics.mass = 2
-  spherePhysics.restitution = 0.8
-  const sphere = BABYLON.MeshBuilder.CreateSphere(
-    'sphere',
-    { segments: 32, diameter },
+  const fill = new BABYLON.HemisphericLight(
+    'fillLight',
+    new BABYLON.Vector3(0, -1, 0),
     scene
   )
-  sphere.position.y = 5
-  addPhysicsBody(
-    sphere,
-    BABYLON.PhysicsShapeType.SPHERE,
-    scene,
-    spherePhysics.mass,
-    spherePhysics.restitution
-  )
+  fill.intensity = 0.2
 }
 
 export async function createWorld(
@@ -144,16 +124,10 @@ export async function createWorld(
     configuration
   )
   const scene = new BABYLON.Scene(engine)
-  const camera = createCamera(scene, canvas)
+  const camera = createCamera(scene)
+  createWorldLight(scene)
 
-  await Promise.all([
-    BABYLON.SceneLoader.AppendAsync(
-      'assets/models/glb/',
-      'pixel_room.glb',
-      scene
-    ),
-    initializePhysics(scene)
-  ])
+  await scene.whenReadyAsync()
 
   if (showLoader) {
     const loader = document.getElementById('custom-loader')
@@ -163,8 +137,6 @@ export async function createWorld(
   for (const texture of scene.textures) {
     texture.updateSamplingMode(1)
   }
-
-  configureWorldGeometry(scene)
   createPostProcess(scene, [camera])
 
   return {
